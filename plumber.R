@@ -1,13 +1,22 @@
+# plumber.R
+
 library(plumber)
 
 # Define a Plumber router
 r <- plumb()
 
-# Create an endpoint for your function
-r$handle("GET", "/sum", function(a, b) {
-  result <- as.numeric(a) + as.numeric(b)
-  list(result = result)
+# Example endpoint
+r$handle("GET", "/hello", function(req, res) {
+  list(message = "Hello, world!")
 })
 
 # Run the API
-r$run(host = "0.0.0.0", port = as.numeric(Sys.getenv("PORT", 8000)))
+if (Sys.getenv("PORT") != "") {
+  pr <- plumber$new()
+  pr$bind(port = as.numeric(Sys.getenv("PORT")))
+  pr$run()
+} else {
+  pr <- plumber$new()
+  pr$run(port = 8000)
+}
+
