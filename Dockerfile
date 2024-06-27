@@ -12,10 +12,10 @@ RUN R -e "install.packages('plumber', repos='http://cran.us.r-project.org')"
 RUN R -e "install.packages('webutils', repos='http://cran.us.r-project.org')"
 
 # Copy the API script into the Docker image
-COPY api.R /api.R
+COPY plumber.R /plumber.R
 
 # Expose the port Plumber will run on
 EXPOSE 8000
 
 # Run the Plumber API
-CMD ["R", "-e", "pr <- plumber::plumb('/api.R'); pr$run(host = '0.0.0.0', port = as.numeric(Sys.getenv('PORT', 8000)))"]
+CMD ["R", "-e", "pr <- plumber::plumb('/plumber.R'); pr$run(host = '0.0.0.0', port = as.numeric(Sys.getenv('PORT', 8000)))"]
